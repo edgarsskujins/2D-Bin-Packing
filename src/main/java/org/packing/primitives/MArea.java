@@ -298,13 +298,16 @@ public class MArea extends Area {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setFont(font);
 		g2d.setColor(Color.BLACK);
+
 		int x = (int) (this.getBounds2D().getX() * xFactor);
 		int y = (int) (this.getBounds2D().getY() * yFactor);
 
-		double binY = binDimension.getHeight() * xFactor;
+		double height = this.getBounds2D().getHeight() * yFactor;
+		double width = this.getBounds2D().getWidth() * xFactor;
 
-		double positionX = x + 15;
-		double positionY = binY - y + 5;
+
+		double positionY = viewPortDimension.getHeight() - y - height/2;
+		double positionX = x + (width / 2);
 
 		g2d.drawString(String.valueOf(this.real_id), (int) (positionX), (int) (positionY));
 	}

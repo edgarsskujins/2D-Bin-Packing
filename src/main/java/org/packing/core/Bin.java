@@ -567,7 +567,7 @@ public class Bin {
 		for (int i = 0; i < notPlaced.length; i++) {
 			boolean placed = false;
 			for (int angle : Constants.ROTATION_ANGLES) {
-				MArea tryArea = new MArea(notPlaced[i], notPlaced[i].getID());
+				MArea tryArea = new MArea(notPlaced[i], notPlaced[i].getID(), notPlaced[i].getRealId());
 				tryArea.rotate(angle);
 				tryArea = dive(tryArea, container, total, new MVector(0, 1));
 				if (tryArea != null) {
