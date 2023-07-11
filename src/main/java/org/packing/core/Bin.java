@@ -147,7 +147,7 @@ public class Bin {
 			int where = findWhereToPlace(pieces[i], freeRectangles);
 			if (where != -1) {
 				Rectangle2D.Double freeRect = freeRectangles.get(where);
-				MArea placed = new MArea(pieces[i], pieces[i].getID());
+				MArea placed = new MArea(pieces[i], pieces[i].getID(), pieces[i].getRealId());
 				placed.placeInPosition(freeRect.getX(), freeRect.getMaxY() - placed.getBoundingBox().getHeight());
 				if (!placed.intersection(total)) {
 					Rectangle2D.Double pieceBB = placed.getBoundingBox2D();

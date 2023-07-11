@@ -18,12 +18,8 @@ public class Example {
 	public static void main(String[] args) throws IOException {
 		Example ex = new Example();
 
-		System.out.println("===========> Example 1 - Rectangles.txt");
-		ex.launch("/Rectangles.txt");
-
-		System.out.println("===========> Example 2 - Shapes0.txt");
-		ex.launch("/Shapes0.txt");
-
+		System.out.println("===========> Example 1 - RectanglesWithIds.txt");
+		ex.launch("/RectanglesWithIds.txt");
 	}
 
 	private void launch(String fileName) throws IOException {
@@ -66,7 +62,7 @@ public class Example {
 			for (MArea area : areasInThisbin) {
 				double offsetX = area.getBoundingBox2D().getX();
 				double offsetY = area.getBoundingBox2D().getY();
-				writer.println(area.getID() + " " + area.getRotation() + " " + offsetX + "," + offsetY);
+				writer.println(area.getRealId() + " " + area.getID() + " " + area.getRotation() + " " + offsetX + "," + offsetY);
 			}
 			writer.close();
 			System.out.println("Generated points file for bin " + String.valueOf(i + 1));

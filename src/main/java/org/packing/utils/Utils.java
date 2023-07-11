@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -96,17 +97,26 @@ public class Utils {
 	public static void drawMAreasToFile(ArrayList<MArea> pieces, Dimension viewPortDimension, Dimension binDimension, String name) throws IOException {
 		BufferedImage img = new BufferedImage(viewPortDimension.width + 20, viewPortDimension.height + 20, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2d = img.createGraphics();
+
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setColor(Color.darkGray);
 		g2d.fillRect(0, 0, viewPortDimension.width + 20, (int) viewPortDimension.height + 20);
 		g2d.setColor(Color.WHITE);
 		g2d.fillRect(10, 10, viewPortDimension.width, viewPortDimension.height);
 		g2d.setColor(Color.BLACK);
+		Font font = new Font("Arial", Font.BOLD, 20);
 		for (int i = 0; i < pieces.size(); i++) {
-			pieces.get(i).drawInViewPort(binDimension, viewPortDimension, g2d);
+			pieces.get(i).drawInViewPort(binDimension, viewPortDimension, g2d, font);
 		}
 		File outputfile = new File(name + ".png");
 		img = flipAroundX(img);
+
+		Graphics g = img.getGraphics();
+
+		for (int i = 0; i < pieces.size(); i++) {
+			pieces.get(i).drawIdsInViewport(binDimension, viewPortDimension, g, font);
+		}
+
 		ImageIO.write(img, "png", outputfile);
 	}
 
@@ -215,6 +225,8 @@ public class Utils {
 			} else {
 				ArrayList<MPointDouble> pointsArrayList = new ArrayList<MPointDouble>();
 				HashSet<MPointDouble> set = new HashSet<MPointDouble>();
+				int id = Integer.parseInt(src[0]);
+				src = Arrays.copyOfRange(src, 1, src.length);
 				for (int j = 0; j < src.length; j++) {
 					String[] point = src[j].split(",");
 					double x = Double.valueOf(point[0]);
@@ -225,7 +237,7 @@ public class Utils {
 						set.add(thisPoint);
 					}
 				}
-				pieces[n] = new MArea(pointsArrayList.toArray(new MPointDouble[0]), n + 1);
+				pieces[n] = new MArea(pointsArrayList.toArray(new MPointDouble[0]), n + 1, id);
 				++n;
 			}
 		}

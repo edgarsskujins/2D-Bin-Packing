@@ -4,6 +4,7 @@ import org.packing.utils.Utils;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.awt.image.AffineTransformOp;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -19,6 +20,8 @@ public class MArea extends Area {
 	private double area;
 
 	private int ID;
+
+	private int real_id;
 	/**
 	 * Accumulate rotation in degrees of this MArea
 	 */
@@ -47,6 +50,20 @@ public class MArea extends Area {
 		super(area);
 		this.area = area.area;
 		this.ID = ID;
+		rotation = area.getRotation();
+	}
+
+	/**
+	 * Creates an MArea based on a MArea previously constructed
+	 *
+	 * @param area MArea from which we are going to construct this MArea
+	 * @param ID   identification for this MArea
+	 */
+	public MArea(MArea area, int ID, int real_id) {
+		super(area);
+		this.area = area.area;
+		this.ID = ID;
+		this.real_id = real_id;
 		rotation = area.getRotation();
 	}
 
@@ -128,6 +145,20 @@ public class MArea extends Area {
 	public MArea(MPointDouble[] points, int ID) {
 		super(Utils.createShape(points));
 		this.ID = ID;
+		computeArea();
+		rotation = 0;
+	}
+
+	/**
+	 * Creates this MArea from a set of points.
+	 *
+	 * @param points describing the contour of this MArea
+	 * @param ID     identifier for this MArea
+	 */
+	public MArea(MPointDouble[] points, int ID, int RealId) {
+		super(Utils.createShape(points));
+		this.ID = ID;
+		this.real_id = RealId;
 		computeArea();
 		rotation = 0;
 	}
@@ -226,25 +257,56 @@ public class MArea extends Area {
 	}
 
 	/**
+	 * @return ID of this MArea
+	 */
+	public int getRealId() {
+		return real_id;
+	}
+
+
+	/**
 	 * Draws this area based on the current view port dimensions
 	 *
 	 * @param Dimension binDimension
 	 * @param Dimension viewPortDimension
-	 * @param Graphics  g
+	 * @param Graphics g
+	 * @param Font font
 	 */
-	public void drawInViewPort(Dimension binDimension, Dimension viewPortDimension, Graphics g) {
+	public void drawInViewPort(Dimension binDimension, Dimension viewPortDimension, Graphics g, Font font) {
 		double xFactor = viewPortDimension.getWidth() / binDimension.getWidth();
 		double yFactor = viewPortDimension.getHeight() / binDimension.getHeight();
 		AffineTransform transform = new AffineTransform();
+		transform.translate(10, 10);
 		transform.scale(xFactor, yFactor);
-		transform.translate(11, 11);
 		Area newArea = this.createTransformedArea(transform);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.BLACK);
 		g2d.setStroke(new BasicStroke(2));
 		g2d.draw(newArea);
-		g2d.setColor(Color.LIGHT_GRAY);
-		g2d.fill(newArea);
+	}
+
+	/**
+	 *
+	 * @param Dimension binDimension
+	 * @param Dimension viewPortDimension
+	 * @param Graphics g
+	 * @param Font font
+	 */
+	public void drawIdsInViewport(Dimension binDimension, Dimension viewPortDimension, Graphics g, Font font){
+		double xFactor = viewPortDimension.getWidth() / binDimension.getWidth();
+		double yFactor = viewPortDimension.getHeight() / binDimension.getHeight();
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setFont(font);
+		g2d.setColor(Color.BLACK);
+		int x = (int) (this.getBounds2D().getX() * xFactor);
+		int y = (int) (this.getBounds2D().getY() * yFactor);
+
+		double binY = binDimension.getHeight() * xFactor;
+
+		double positionX = x + 15;
+		double positionY = binY - y + 5;
+
+		g2d.drawString(String.valueOf(this.real_id), (int) (positionX), (int) (positionY));
 	}
 
 	/**
