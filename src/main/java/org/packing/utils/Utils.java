@@ -225,7 +225,7 @@ public class Utils {
 			} else {
 				ArrayList<MPointDouble> pointsArrayList = new ArrayList<MPointDouble>();
 				HashSet<MPointDouble> set = new HashSet<MPointDouble>();
-				int id = Integer.parseInt(src[0]);
+				String id = src[0];
 				src = Arrays.copyOfRange(src, 1, src.length);
 				for (int j = 0; j < src.length; j++) {
 					String[] point = src[j].split(",");

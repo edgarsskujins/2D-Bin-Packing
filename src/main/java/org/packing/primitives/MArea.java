@@ -4,7 +4,6 @@ import org.packing.utils.Utils;
 
 import java.awt.*;
 import java.awt.geom.*;
-import java.awt.image.AffineTransformOp;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -21,7 +20,7 @@ public class MArea extends Area {
 
 	private int ID;
 
-	private int real_id;
+	private String real_id;
 	/**
 	 * Accumulate rotation in degrees of this MArea
 	 */
@@ -59,7 +58,7 @@ public class MArea extends Area {
 	 * @param area MArea from which we are going to construct this MArea
 	 * @param ID   identification for this MArea
 	 */
-	public MArea(MArea area, int ID, int real_id) {
+	public MArea(MArea area, int ID, String real_id) {
 		super(area);
 		this.area = area.area;
 		this.ID = ID;
@@ -155,7 +154,7 @@ public class MArea extends Area {
 	 * @param points describing the contour of this MArea
 	 * @param ID     identifier for this MArea
 	 */
-	public MArea(MPointDouble[] points, int ID, int RealId) {
+	public MArea(MPointDouble[] points, int ID, String RealId) {
 		super(Utils.createShape(points));
 		this.ID = ID;
 		this.real_id = RealId;
@@ -257,9 +256,9 @@ public class MArea extends Area {
 	}
 
 	/**
-	 * @return ID of this MArea
+	 * @return real_id of this MArea
 	 */
-	public int getRealId() {
+	public String getRealId() {
 		return real_id;
 	}
 
